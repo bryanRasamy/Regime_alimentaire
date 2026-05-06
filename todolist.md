@@ -76,3 +76,28 @@
 - design: 
     - Header:
         - logo: texte:"Nutri-Plaisir"
+        - profil user
+    
+    - Barre de navigation (vertical/gauche):
+        - ( a determiner)
+
+    - main: vide
+
+    - Footer:
+
+- integration:
+    - mettre dynamiquement la page cliquer dans main
+
+### 2-login.php:
+- base: 
+    - Table user
+    - Table statut_user
+    
+- fonction:
+    - authentifier()
+
+- design:
+
+- integration: none
+
+
