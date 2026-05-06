@@ -13,6 +13,15 @@ class GestionUser extends BaseController{
         return view('login', $data);
     }
 
+    public function inscription()
+    {
+        $data = [
+            'title' => 'Inscription',
+        ];
+
+        return view('register', $data);
+    }
+
     public function authentifier(){
         $userModel = new UserModel();
         $nom = $this->request->getPost('email');
@@ -32,5 +41,18 @@ class GestionUser extends BaseController{
         } else {
             return redirect()->back()->withInput()->with('error', 'Email ou mot de passe incorrect');
         }
+    }
+
+    public function inscrire()
+    {
+        $email = (string) $this->request->getPost('email');
+        $password = (string) $this->request->getPost('password');
+        $genre = (string) $this->request->getPost('genre');
+
+        if ($email === '' || $password === '' || $genre === '') {
+            return redirect()->back()->withInput()->with('error', 'Tous les champs sont obligatoires.');
+        }
+
+        return redirect()->to('/')->with('success', 'Inscription enregistree.');
     }
 }
