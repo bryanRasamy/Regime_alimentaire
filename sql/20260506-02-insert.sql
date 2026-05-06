@@ -1,3 +1,8 @@
+-- donne pour statut
+INSERT INTO statut_user (libelle) VALUES
+  ('simple'),
+  ('Admin');
+
 -- donne pour user
 INSERT INTO user (nom, email, password, id_statut) VALUES
   ('Alice Dupont', 'alicedupont@example.com', 'alice', 1),
@@ -6,23 +11,20 @@ INSERT INTO user (nom, email, password, id_statut) VALUES
   ('David Moreau', 'davidmoreau@example.com', 'david', 1),
   ('Emma Leroy', 'emmaleroy@example.com', 'emma', 2);
 
--- donne pour statut
-INSERT INTO statut (libelle) VALUES
-  ('simple'),
-  ('Admin');
+
 
 -- donne pour code
 INSERT INTO code (libelle, montant, date_expiration) VALUES
     ('CD34', 10000, '2026-05-15'),
-    ('CD56', 15000, '2026-06-30'),
-    ('CD78', 20000, '2026-07-31'),
-    ('CD90', 25000, '2026-08-31'),
-    ('CD12', 30000, '2026-09-30'),
-    ('CD45', 35000, '2026-10-31'),
+    ('CD36', 15000, '2026-06-30'),
+    ('CD48', 20000, '2026-07-31'),
+    ('CD80', 25000, '2026-08-31'),
+    ('CD22', 30000, '2026-09-30'),
+    ('CD55', 35000, '2026-10-31'),
     ('CD67', 40000, '2026-11-30'),
     ('CD89', 45000, '2026-12-31'),
     ('CD23', 50000, '2027-01-31'),
-    ('CD34', 55000, '2027-02-28'),
+    ('CD99', 55000, '2027-02-28'),
     ('CD56', 60000, '2027-03-31'),
     ('CD78', 65000, '2027-04-30'),
     ('CD90', 70000, '2027-05-31'),
@@ -45,13 +47,16 @@ INSERT INTO regime (nom, description, id_objectif, duree_jours, variation_poids,
     ('Régime Paléo', 'Un régime basé sur les aliments que nos ancêtres chasseurs-cueilleurs consommaient pour favoriser la perte de poids et la santé globale.', 1, 45, -4, 179.99); 
 
 -- donee pour sport
-INSERT INTO sport (nom, description) VALUES
-    ('Course à pied', 'Un sport d endurance qui consiste à courir sur une distance donnée.'),
-    ('Musculation', 'Un sport de force qui consiste à soulever des poids pour développer les muscles.'),
-    ('Natation', 'Un sport aquatique qui consiste à nager dans une piscine ou en eau libre.'),
-    ('Cyclisme', 'Un sport de plein air qui consiste à pédaler sur une distance donnée.'),
-    ('Yoga', 'Un sport de relaxation et de méditation qui consiste à pratiquer des postures et des exercices de respiration.');
+INSERT INTO sport (libelle) VALUES
+    ('Course à pied'),
+    ('Musculation'),
+    ('Natation'),
+    ('Cyclisme'),
+    ('Yoga');
 
+INSERT INTO niveau_intensite (libelle) VALUES
+    ('Faible'),
+    ('Élevée');
 
 -- DONNEE POUR ACTIVITE_SPORTIVE
 INSERT INTO activite_sportive (id_activite, id_sport, id_objectif, description, variation_poids, id_niveau) VALUES
