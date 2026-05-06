@@ -219,10 +219,6 @@
 
                     <button type="submit" class="submit-btn">Se connecter</button>
                 </form>
-
-                <p class="form-note">
-                    Route prevue: <strong>/login/auth</strong>
-                </p>
             </div>
         </section>
     </div>

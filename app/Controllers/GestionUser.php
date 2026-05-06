@@ -15,10 +15,10 @@ class GestionUser extends BaseController{
 
     public function authentifier(){
         $userModel = new UserModel();
-        $nom = $this->request->getPost('nom');
+        $nom = $this->request->getPost('email');
         $mot_de_passe = $this->request->getPost('password');
 
-        $user = $userModel->where('nom', $nom)->first();
+        $user = $userModel->where('email', $nom)->first();
 
         if ($user && password_verify($mot_de_passe, $user['password'])) {
             session()->set('user', [
@@ -30,7 +30,7 @@ class GestionUser extends BaseController{
 
             return redirect()->to('/home')->with('success', 'Connexion réussie');
         } else {
-            return redirect()->back()->withInput()->with('error', 'nom ou mot de passe incorrect');
+            return redirect()->back()->withInput()->with('error', 'Email ou mot de passe incorrect');
         }
     }
 }
