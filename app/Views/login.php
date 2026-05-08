@@ -4,174 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'Connexion') ?> | HealthyDiet</title>
-    <style>
-        :root {
-            --bg: #f4f8f2;
-            --surface: rgba(255, 255, 255, 0.92);
-            --primary: #2f6f3e;
-            --primary-dark: #214f2c;
-            --accent: #f2b84b;
-            --text: #17301f;
-            --muted: #667567;
-            --border: #d5e2d2;
-            --shadow: 0 24px 60px rgba(31, 59, 38, 0.16);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
-            color: var(--text);
-            background:
-                radial-gradient(circle at top left, rgba(242, 184, 75, 0.30), transparent 28%),
-                radial-gradient(circle at bottom right, rgba(47, 111, 62, 0.20), transparent 30%),
-                linear-gradient(135deg, #eff7e9 0%, #f8fbf5 50%, #edf4ea 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-
-        .login-shell {
-            width: min(1040px, 100%);
-            display: grid;
-            grid-template-columns: 1.05fr 0.95fr;
-            background: var(--surface);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: var(--shadow);
-            border-radius: 28px;
-            overflow: hidden;
-            backdrop-filter: blur(8px);
-        }
-
-        .login-aside {
-            padding: 48px;
-            background: linear-gradient(160deg, #2c6a3a 0%, #204a2a 100%);
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 26px;
-        }
-
-        .login-brand {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0 0 14px;
-        }
-
-        .login-copy {
-            margin: 0;
-            line-height: 1.7;
-            color: rgba(255, 255, 255, 0.84);
-        }
-
-        .login-highlights {
-            display: grid;
-            gap: 14px;
-        }
-
-        .highlight {
-            padding: 16px 18px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.10);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-        }
-
-        .highlight strong {
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .login-panel {
-            padding: 48px;
-            display: flex;
-            align-items: center;
-        }
-
-        .login-form-wrap {
-            width: 100%;
-        }
-
-        .login-kicker {
-            color: var(--primary);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-size: 0.82rem;
-        }
-
-        h1 {
-            margin: 10px 0 12px;
-            font-size: 2rem;
-        }
-
-        .login-subtitle {
-            margin: 0 0 28px;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        form {
-            display: grid;
-            gap: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            background: #fff;
-            font-size: 1rem;
-            color: var(--text);
-        }
-
-        input:focus {
-            outline: 2px solid rgba(47, 111, 62, 0.18);
-            border-color: var(--primary);
-        }
-
-        .submit-btn {
-            border: none;
-            border-radius: 14px;
-            padding: 15px 18px;
-            background: linear-gradient(135deg, var(--accent) 0%, #e6a831 100%);
-            color: #2d2208;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .form-note {
-            margin-top: 14px;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        @media (max-width: 900px) {
-            .login-shell {
-                grid-template-columns: 1fr;
-            }
-
-            .login-aside,
-            .login-panel {
-                padding: 32px 24px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
+    <script src="<?= base_url('assets/login.js') ?>" defer></script>
 </head>
-<body>
+<body class="login-page">
     <div class="login-shell">
         <section class="login-aside">
             <div>
@@ -202,22 +38,27 @@
             <div class="login-form-wrap">
                 <p class="login-kicker">Connexion</p>
                 <h1>Bienvenue</h1>
-                <p class="login-subtitle">
-                    Interface HTML uniquement pour le moment. Le controleur et le modele pourront etre relies ensuite sans changer la structure visuelle.
-                </p>
+                <p class="login-subtitle">Accedez a votre espace.</p>
 
-                <form action="<?= base_url('login/auth') ?>" method="post">
+                <?php $security = config('Security'); ?>
+                <form action="<?= base_url('login/authentifier') ?>" method="post" data-ajax="true" data-csrf-cookie="<?= esc($security->cookieName) ?>" data-csrf-header="<?= esc($security->headerName) ?>">
+                    <?= csrf_field() ?>
                     <div>
                         <label for="email">Adresse email</label>
-                        <input type="email" id="email" name="email" placeholder="exemple@email.com">
+                        <input type="email" id="email" name="email" placeholder="exemple@email.com" required>
                     </div>
 
                     <div>
                         <label for="password">Mot de passe</label>
-                        <input type="password" id="password" name="password" placeholder="Votre mot de passe">
+                        <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
                     </div>
 
-                    <button type="submit" class="submit-btn">Se connecter</button>
+                    <p class="form-feedback" role="alert" aria-live="polite"></p>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Se connecter</button>
+                        <a class="secondary-btn" href="<?= base_url('inscription') ?>">S'inscrire</a>
+                    </div>
                 </form>
             </div>
         </section>
