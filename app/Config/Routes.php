@@ -8,5 +8,5 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'GestionUser::index');
 $routes->post('login/authentifier', 'GestionUser::authentifier');
-$routes->get('register', 'GestionUser::inscription');
-$routes->post('register/store', 'GestionUser::inscrire');
+$routes->get('inscription', 'GestionUser::inscription');
+$routes->post('inscription/store', 'GestionUser::inscrire');

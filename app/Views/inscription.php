@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'Inscription') ?> | HealthyDiet</title>
     <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
+    <script src="<?= base_url('assets/inscription.js') ?>" defer></script>
 </head>
 <body class="login-page">
     <div class="login-shell">
@@ -35,7 +36,9 @@
                 <h1>Nouveau compte</h1>
                 <p class="login-subtitle">Remplissez le formulaire.</p>
 
-                <form action="<?= base_url('register/store') ?>" method="post">
+                <?php $security = config('Security'); ?>
+                <form action="<?= base_url('inscription/store') ?>" method="post" data-ajax="true" data-csrf-cookie="<?= esc($security->cookieName) ?>" data-csrf-header="<?= esc($security->headerName) ?>">
+                    <?= csrf_field() ?>
                     <div>
                         <label for="register-email">Adresse email</label>
                         <input type="email" id="register-email" name="email" placeholder="exemple@email.com" required>
@@ -54,6 +57,8 @@
                             <option value="Femme">Femme</option>
                         </select>
                     </div>
+
+                    <p class="form-feedback" role="alert" aria-live="polite"></p>
 
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">S'inscrire</button>

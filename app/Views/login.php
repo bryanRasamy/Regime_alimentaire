@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'Connexion') ?> | HealthyDiet</title>
     <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
+    <script src="<?= base_url('assets/login.js') ?>" defer></script>
 </head>
 <body class="login-page">
     <div class="login-shell">
@@ -39,7 +40,9 @@
                 <h1>Bienvenue</h1>
                 <p class="login-subtitle">Accedez a votre espace.</p>
 
-                <form action="<?= base_url('login/authentifier') ?>" method="post">
+                <?php $security = config('Security'); ?>
+                <form action="<?= base_url('login/authentifier') ?>" method="post" data-ajax="true" data-csrf-cookie="<?= esc($security->cookieName) ?>" data-csrf-header="<?= esc($security->headerName) ?>">
+                    <?= csrf_field() ?>
                     <div>
                         <label for="email">Adresse email</label>
                         <input type="email" id="email" name="email" placeholder="exemple@email.com" required>
@@ -50,9 +53,11 @@
                         <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
                     </div>
 
+                    <p class="form-feedback" role="alert" aria-live="polite"></p>
+
                     <div class="form-actions">
                         <button type="submit" class="submit-btn">Se connecter</button>
-                        <a class="secondary-btn" href="<?= base_url('register') ?>">S'inscrire</a>
+                        <a class="secondary-btn" href="<?= base_url('inscription') ?>">S'inscrire</a>
                     </div>
                 </form>
             </div>
