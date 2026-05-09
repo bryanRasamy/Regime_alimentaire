@@ -20,9 +20,9 @@ CREATE TABLE info_user(
     id_info INT PRIMARY KEY AUTO_INCREMENT,
     id_user INT,
     genre VARCHAR(10),
-    taille NUMERIC(3,2),
-    poids NUMERIC(3,2),
-    IMC NUMERIC(3,2),
+    taille NUMERIC(5,2),
+    poids NUMERIC(5,2),
+    IMC NUMERIC(5,2),
     FOREIGN KEY (id_user) REFERENCES user(id_user)
 );
 
