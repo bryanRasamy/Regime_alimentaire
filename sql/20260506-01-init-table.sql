@@ -13,6 +13,8 @@ CREATE TABLE user(
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     id_statut INT,
+    porte_monnaie DECIMAL(10,2),
+    option_gold DECIMAL(5,2),
     FOREIGN KEY (id_statut) REFERENCES statut_user(id_statut)
 );
 
@@ -58,6 +60,9 @@ CREATE TABLE regime(
     id_regime INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(50),
     description TEXT,
+    viande DECIMAL(5,2),
+    poisson DECIMAL(5,2),
+    volaille DECIMAL(5,2),
     id_objectif INT,
     duree_jours INT,
     variation_poids NUMERIC(3,2),
@@ -85,4 +90,25 @@ CREATE TABLE activite_sportive(
     FOREIGN KEY (id_sport) REFERENCES sport(id_sport),
     FOREIGN KEY (id_objectif) REFERENCES objectif(id_objectif),
     FOREIGN KEY (id_niveau) REFERENCES niveau_intensite(id_niveau)
+);
+
+CREATE TABLE regime_user(
+    id_regime_user INT PRIMARY KEY AUTO_INCREMENT,
+    id_regime INT,
+    id_user INT,
+    id_selection INT,
+    date_debut DATE,
+    date_fin DATE,
+    FOREIGN KEY (id_regime) REFERENCES regime(id_regime),
+    FOREIGN KEY (id_user) REFERENCES user(id_user)
+);
+
+CREATE TABLE regime_selection(
+    id_selection INT PRIMARY KEY AUTO_INCREMENT,
+    id_user INT,
+    objectif VARCHAR(50),
+    valeur_target NUMERIC(6,2),
+    somme_obtenue NUMERIC(6,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_user) REFERENCES user(id_user)
 );

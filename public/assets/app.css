@@ -404,6 +404,10 @@ select:focus {
     border-radius: 14px;
 }
 
+.radio-group-vertical {
+    flex-direction: column;
+}
+
 .radio-group.input-error {
     border-color: transparent !important;
     outline: 2px solid rgba(180, 63, 63, 0.18) !important;
@@ -444,6 +448,16 @@ select:focus {
     border-color: var(--primary);
     background: rgba(47, 111, 62, 0.08);
     font-weight: 600;
+}
+
+.objective-value-wrapper {
+    display: grid;
+    gap: 8px;
+    margin-top: -4px;
+}
+
+.objective-value-wrapper[hidden] {
+    display: none;
 }
 
 .form-note {

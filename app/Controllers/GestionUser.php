@@ -83,7 +83,9 @@ class GestionUser extends BaseController{
             'nom'       => $data['name'],
             'email'     => $data['email'],
             'password'  => $data['password'],
-            'id_statut' => $data['id_statut'] ?? 1
+            'id_statut' => $data['id_statut'] ?? 1,
+            'porte_monnaie' => $data['porte_monnaie'] ?? 1000.00,
+            'option_gold' => $data['option_gold'] ?? 0.00
         ];
 
         if (!$userModel->validate($userData)) {
@@ -110,7 +112,9 @@ class GestionUser extends BaseController{
                 'id'        => $user['id_user'],
                 'nom'       => $user['nom'],
                 'email'     => $user['email'],
-                'id_statut' => $user['id_statut']
+                'id_statut' => $user['id_statut'],
+                'porte_monnaie' => $user['porte_monnaie'],
+                'option_gold' => $user['option_gold']
             ]);
 
         if ($isAjax) {
@@ -178,10 +182,10 @@ class GestionUser extends BaseController{
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Informations enregistrées avec succès.',
-                'redirect' => '/home', // Plus logique d'aller sur l'accueil un fois fini
+                'redirect' => '/regime/objectif',
             ]);
         }
 
-        return redirect()->to('/home')->with('success', 'Informations enregistrées avec succès.');
+        return redirect()->to('/regime/objectif')->with('success', 'Informations enregistrées avec succès.');
     }
 }

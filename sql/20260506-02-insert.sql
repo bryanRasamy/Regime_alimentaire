@@ -4,12 +4,12 @@ INSERT INTO statut_user (libelle) VALUES
   ('Admin');
 
 -- donne pour user
-INSERT INTO user (nom, email, password, id_statut) VALUES
-  ('Alice Dupont', 'alicedupont@example.com', 'alice', 1),
-  ('Bruno Martin', 'brunomartin@example.com', 'bruno', 1),
-  ('Caroline Bernard', 'carolinebernard@example.com', 'caroline', 1),
-  ('David Moreau', 'davidmoreau@example.com', 'david', 1),
-  ('Emma Leroy', 'emmaleroy@example.com', 'emma', 2);
+INSERT INTO user (nom, email, password, id_statut, porte_monnaie, option_gold) VALUES
+  ('Alice Dupont', 'alicedupont@example.com', 'alice', 1, 1000.00, 15.00),
+  ('Bruno Martin', 'brunomartin@example.com', 'bruno', 1, 1500.00, 0.00),
+  ('Caroline Bernard', 'carolinebernard@example.com', 'caroline', 1, 2000.00, 0.00),
+  ('David Moreau', 'davidmoreau@example.com', 'david', 1, 2500.00, 0.00),
+  ('Emma Leroy', 'emmaleroy@example.com', 'emma', 2, 3000.00, 15.00);
 
 
 
@@ -39,12 +39,12 @@ INSERT INTO objectif (libelle) VALUES
     ('Maintien du poids');
 
 -- donee pour regime
-INSERT INTO regime (nom, description, id_objectif, duree_jours, variation_poids, prix) VALUES
-    ('Régime Keto', 'Un régime riche en graisses et pauvre en glucides pour favoriser la perte de poids.', 1, 30, -5, 199.99),
-    ('Régime Hyperprotéiné', 'Un régime riche en protéines pour favoriser la prise de masse musculaire.', 2, 60, +3, 149.99),
-    ('Régime Méditerranéen', 'Un régime équilibré basé sur les aliments traditionnels de la région méditerranéenne pour maintenir un poids santé.', 3, 90, 0, 99.99),
-    ('Régime Végétarien', 'Un régime qui exclut la viande et les produits d origine animale pour favoriser la santé et le bien-être.', 3, 60, -2, 129.99),
-    ('Régime Paléo', 'Un régime basé sur les aliments que nos ancêtres chasseurs-cueilleurs consommaient pour favoriser la perte de poids et la santé globale.', 1, 45, -4, 179.99); 
+INSERT INTO regime (nom, description, viande, poisson, volaille, id_objectif, duree_jours, variation_poids, prix) VALUES
+    ('Régime Keto', 'Un régime riche en graisses et pauvre en glucides pour favoriser la perte de poids.', 70.00, 20.00, 10.00, 1, 30, -5, 199.99),
+    ('Régime Hyperprotéiné', 'Un régime riche en protéines pour favoriser la prise de masse musculaire.', 50.00, 20.00, 30.00, 2, 60, +3, 149.99),
+    ('Régime Méditerranéen', 'Un régime équilibré basé sur les aliments traditionnels de la région méditerranéenne pour maintenir un poids santé.', 20.00, 60.00, 20.00, 3, 90, 0, 99.99),
+    ('Régime Végétarien', 'Un régime qui exclut la viande et les produits d origine animale pour favoriser la santé et le bien-être.', 5.00, 40.00, 55.00, 3, 60, -2, 129.99),
+    ('Régime Paléo', 'Un régime basé sur les aliments que nos ancêtres chasseurs-cueilleurs consommaient pour favoriser la perte de poids et la santé globale.', 12.00, 38.00, 50.00, 1, 45, -4, 179.99);
 
 -- donee pour sport
 INSERT INTO sport (libelle) VALUES

@@ -13,6 +13,8 @@ class UserModel extends Model{
         'email',
         'password',
         'id_statut',
+        'porte_monnaie',
+        'option_gold'
     ];
 
     protected $validationRules = [
@@ -20,6 +22,8 @@ class UserModel extends Model{
         'email' => 'required|valid_email|is_unique[user.email]',
         'password' => 'required|min_length[6]',
         'id_statut' => 'required|integer|in_list[1,2]',
+        'porte_monnaie' => 'required|decimal[10,2]',
+        'option_gold' => 'required|decimal[5,2]'
     ];
 
     protected $validationMessages = [
@@ -40,6 +44,14 @@ class UserModel extends Model{
             'required' => 'Le statut est obligatoire.',
             'integer' => 'Le statut doit être un nombre entier.',
             'in_list' => 'Le statut doit être 1 ou 2.',
+        ],
+        'porte_monnaie' => [
+            'required' => 'Le porte-monnaie est obligatoire.',
+            'decimal' => 'Le porte-monnaie doit être un nombre décimal avec 2 décimales.',
+        ],
+        'option_gold' => [
+            'required' => 'L\'option gold est obligatoire.',
+            'decimal' => 'L\'option gold doit être un nombre décimal avec 2 décimales.',
         ],
     ];
 }
