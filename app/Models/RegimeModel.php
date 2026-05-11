@@ -23,13 +23,13 @@ class RegimeModel extends Model{
     protected $validationRules = [
         'nom' => 'required|min_length[3]',
         'description' => 'required|min_length[10]',
-        'viande' => 'required|decimal',
-        'poisson' => 'required|decimal',
-        'volaille' => 'required|decimal',
+        'viande' => 'required|numeric',
+        'poisson' => 'required|numeric',
+        'volaille' => 'required|numeric',
         'id_objectif' => 'required|integer|is_not_unique[objectif.id_objectif]',
         'duree_jours' => 'required|integer',
-        'variation_poids' => 'required|decimal',
-        'prix' => 'required|decimal[10,2]',
+        'variation_poids' => 'required|numeric',
+        'prix' => 'required|decimal',
     ];
 
     protected $validationMessages = [
@@ -43,15 +43,15 @@ class RegimeModel extends Model{
         ],
         'viande' => [
             'required' => 'La quantité de viande est obligatoire.',
-            'decimal' => "La quantité de viande doit être un nombre décimal.",
+            'numeric' => "La quantité de viande doit être un nombre.",
         ],
         'poisson' => [
             'required' => 'La quantité de poisson est obligatoire.',
-            'decimal' => "La quantité de poisson doit être un nombre décimal.",
+            'numeric' => "La quantité de poisson doit être un nombre.",
         ],
         'volaille' => [
             'required' => 'La quantité de volaille est obligatoire.',
-            'decimal' => "La quantité de volaille doit être un nombre décimal.",
+            'numeric' => "La quantité de volaille doit être un nombre.",
         ],
         'id_objectif' => [
             'required' => "L'objectif du régime est obligatoire.",
@@ -60,7 +60,7 @@ class RegimeModel extends Model{
         ],
         'variation_poids' => [
             'required' => "La variation de poids attendue est obligatoire.",
-            'decimal' => "La variation de poids doit être un nombre décimal.",
+            'numeric' => "La variation de poids doit être un nombre.",
         ],
         'prix' => [
             'required' => "Le prix du régime est obligatoire.",

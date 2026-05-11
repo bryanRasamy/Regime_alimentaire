@@ -16,10 +16,17 @@
             </div>
 
             <nav class="sidebar-nav">
-                <a class="sidebar-link active" href="<?= base_url('dashboard') ?>">Tableau de bord</a>
                 <a class="sidebar-link" href="<?= base_url('regime') ?>">Mon regime</a>
                 <a class="sidebar-link" href="<?= base_url('profil') ?>">Mon profil</a>
                 <a class="sidebar-link" href="<?= base_url('regime/objectif') ?>">Mes objectifs</a>
+
+                <?php $userSession = session()->get('user'); if ($userSession && isset($userSession['id_statut']) && $userSession['id_statut'] == 2) { ?>
+                    <div style="margin: 15px 0 5px 20px; font-weight: bold; font-size: 0.8em; color: #94a3b8; text-transform: uppercase;">ADMINISTRATION</div>
+                    <a class="sidebar-link" href="<?= base_url('back-office/dashboard') ?>">Tableau de bord</a>
+                    <a class="sidebar-link" href="<?= base_url('back-office/regimes') ?>">Régimes</a>
+                    <a class="sidebar-link" href="<?= base_url('back-office/activites') ?>">Activités sportives</a>
+                    <a class="sidebar-link" href="<?= base_url('back-office/codes') ?>">Codes de recharge</a>
+                <?php } ?>
             </nav>
 
             <div class="sidebar-note">
@@ -39,13 +46,13 @@
                     ?>
                     <form action="<?= base_url('profil/acheter-gold') ?>" method="post" class="form-gold">
                         <?= csrf_field() ?>
-                        <button type="submit" class="btn-gold">🌟 Acheter Option Gold (20 000 Ar)</button>
+                        <button type="submit" class="btn-gold">Acheter Option Gold (20 000 Ar)</button>
                     </form>
                     <?php } elseif ($isGold && $userSession) { ?>
-                        <div class="badge-gold">🌟 Membre Gold</div>
+                        <div class="badge-gold">Membre Gold</div>
                     <?php } ?>
                     <div class="profile-pill">
-                        <?= esc('Profil utilisateur') ?>
+                        <?= esc($userSession['nom']) ?>
                     </div>
                     <a class="logout-btn" href="<?= base_url('logout') ?>">Se déconnecter</a>
                 </div>

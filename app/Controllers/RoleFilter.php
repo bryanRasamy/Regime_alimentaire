@@ -12,7 +12,7 @@ class RoleFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null){
         $session = session();
         $user = $session->get('user');
-        $arguments=[1];
+        $arguments=[2];
         
         if (!$user || !in_array($user['id_statut'], $arguments ?? [])) {
             return redirect()->back()->with('error', 'Accès refusé : droits insuffisants');

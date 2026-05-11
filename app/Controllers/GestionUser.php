@@ -6,7 +6,8 @@ use App\Models\UserModel;
 use App\Models\InfoUserModel;
 use App\Models\CodeModel;
 use App\Models\CodeUserModel;
-
+use App\Models\RegimeModel;
+use App\Models\RegimeSelection;
 
 class GestionUser extends BaseController{
     public function index(){
@@ -308,5 +309,63 @@ class GestionUser extends BaseController{
         ]));
 
         return redirect()->back()->with('success', 'Félicitations ! Vous avez acquis l\'option Gold et bénéficiez de -' . $pourcentageRemise . '% sur tous vos programmes !');
+    }
+
+    public function dashboard(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $userModel = new UserModel();
+        $regimeModel = new RegimeModel();
+        $selectionModel = new RegimeSelection();
+
+        $totalUsers = (int) $userModel->countAllResults();
+        $totalGoldUsers = (int) $userModel->where('option_gold >', 0)->countAllResults();
+
+        $totalGoldAmountRow = $userModel->selectSum('option_gold', 'total_gold')->first();
+        $totalWalletRow = $userModel->selectSum('porte_monnaie', 'total_wallet')->first();
+
+        $totalGoldAmount = (float) ($totalGoldAmountRow['total_gold'] ?? 0);
+        $totalWalletRecharge = (float) ($totalWalletRow['total_wallet'] ?? 0);
+
+        $objectiveStats = $selectionModel
+            ->select('objectif, COUNT(*) AS total')
+            ->groupBy('objectif')
+            ->findAll();
+
+        $regimeStats = $regimeModel
+            ->select('id_objectif, COUNT(*) AS total_regimes, AVG(prix) AS prix_moyen')
+            ->groupBy('id_objectif')
+            ->findAll();
+
+        $objectifMap = [
+            1 => 'reduire_poids',
+            2 => 'augmenter_poids',
+            3 => 'imc_ideale',
+        ];
+
+        $regimesByObjective = [];
+        foreach ($regimeStats as $row) {
+            $regimesByObjective[] = [
+                'objectif' => $objectifMap[$row['id_objectif']] ?? 'objectif_' . $row['id_objectif'],
+                'total_regimes' => (int) $row['total_regimes'],
+                'prix_moyen' => (float) $row['prix_moyen'],
+            ];
+        }
+
+        $data = [
+            'title' => 'Tableau de bord',
+            'totalUsers' => $totalUsers,
+            'totalGoldUsers' => $totalGoldUsers,
+            'totalGoldAmount' => $totalGoldAmount,
+            'totalWalletRecharge' => $totalWalletRecharge,
+            'objectiveStats' => $objectiveStats,
+            'regimesByObjective' => $regimesByObjective,
+            'userName' => $user['nom'] ?? 'Utilisateur',
+        ];
+
+        return view('dashboard', $data);
     }
 }
