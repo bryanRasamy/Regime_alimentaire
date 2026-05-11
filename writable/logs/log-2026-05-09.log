@@ -1,0 +1,50 @@
+CRITICAL - 2026-05-09 16:55:41 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "information.php"
+[Method: GET, Route: inscription/user/info]
+in SYSTEMPATH/Exceptions/FrameworkException.php on line 39.
+ 1 SYSTEMPATH/View/View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/GestionUser.php(121): view()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\GestionUser->information()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+10 SYSTEMPATH/rewrite.php(44): require_once('/home/bryan/Documents/GitHub/Regime_alimentaire/public/index.php')
+CRITICAL - 2026-05-09 17:10:41 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "information.php"
+[Method: GET, Route: inscription/user/info]
+in SYSTEMPATH/Exceptions/FrameworkException.php on line 39.
+ 1 SYSTEMPATH/View/View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/GestionUser.php(121): view()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\GestionUser->information()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+10 SYSTEMPATH/rewrite.php(44): require_once('/home/bryan/Documents/GitHub/Regime_alimentaire/public/index.php')
+CRITICAL - 2026-05-09 17:15:59 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "information.php"
+[Method: GET, Route: inscription/user/info]
+in SYSTEMPATH/Exceptions/FrameworkException.php on line 39.
+ 1 SYSTEMPATH/View/View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/GestionUser.php(121): view()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\GestionUser->information()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+10 SYSTEMPATH/rewrite.php(44): require_once('/home/bryan/Documents/GitHub/Regime_alimentaire/public/index.php')
+CRITICAL - 2026-05-09 17:28:23 --> ErrorException: Trying to access array offset on value of type null
+[Method: POST, Route: inscription/user/info/add]
+in APPPATH/Controllers/GestionUser.php on line 136.
+ 1 APPPATH/Controllers/GestionUser.php(136): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\GestionUser->ajouterInformation()
+ 3 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 4 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 5 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 7 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+ 8 SYSTEMPATH/rewrite.php(44): require_once('/home/bryan/Documents/GitHub/Regime_alimentaire/public/index.php')

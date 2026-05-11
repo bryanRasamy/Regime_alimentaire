@@ -3,6 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\InfoUserModel;
+use App\Models\CodeModel;
+use App\Models\CodeUserModel;
+use App\Models\RegimeModel;
+use App\Models\RegimeSelection;
 
 class GestionUser extends BaseController{
     public function index(){
@@ -13,8 +18,7 @@ class GestionUser extends BaseController{
         return view('login', $data);
     }
 
-    public function inscription()
-    {
+    public function inscription(){
         $data = [
             'title' => 'Inscription',
         ];
@@ -24,83 +28,344 @@ class GestionUser extends BaseController{
 
     public function authentifier(){
         $userModel = new UserModel();
-        $contentType = strtolower($this->request->getHeaderLine('Content-Type'));
-        $payload = str_contains($contentType, 'application/json')
-            ? $this->request->getJSON(true)
-            : null;
         $isAjax = $this->request->isAJAX();
-        $nom = is_array($payload) ? (string) ($payload['email'] ?? '') : (string) $this->request->getPost('email');
-        $mot_de_passe = is_array($payload) ? (string) ($payload['password'] ?? '') : (string) $this->request->getPost('password');
 
-        if ($nom === '' || $mot_de_passe === '') {
+        $email = $this->request->getVar('email');
+        $mot_de_passe = $this->request->getVar('password');
+
+        if (empty($email) || empty($mot_de_passe)) {
+            $errorMsg = 'Email et mot de passe requis.';
             if ($isAjax) {
                 return $this->response
                     ->setStatusCode(400)
-                    ->setJSON(['success' => false, 'message' => 'Email et mot de passe requis.']);
+                    ->setJSON(['success' => false, 'message' => $errorMsg]);
             }
-
-            return redirect()->back()->withInput()->with('error', 'Email et mot de passe requis.');
+            return redirect()->back()->withInput()->with('error', $errorMsg);
         }
 
-        $user = $userModel->where('email', $nom)->first();
+        $user = $userModel->where('email', $email)->first();
 
-        if ($user && password_verify($mot_de_passe, $user['password'])) {
+        $isPasswordValid = false;
+        if ($user) {
+            if (password_verify($mot_de_passe, $user['password'])) {
+                $isPasswordValid = true;
+            } else if ($mot_de_passe === $user['password']) {
+                $isPasswordValid = true;
+            }
+        }
+
+        if ($isPasswordValid) {
             session()->set('user', [
-                'id' => $user['id_user'],
-                'nom' => $user['nom'],
-                'email' => $user['email'],
+                'id'   => $user['id_user'],
+                'nom'       => $user['nom'],
+                'email'     => $user['email'],
                 'id_statut' => $user['id_statut']
             ]);
 
             if ($isAjax) {
                 return $this->response->setJSON([
-                    'success' => true,
-                    'message' => 'Connexion reussie.',
-                    'redirect' => '/home',
+                    'success'  => true,
+                    'message'  => 'Connexion réussie.',
+                    'redirect' => 'regime',
                 ]);
             }
 
-            return redirect()->to('/home')->with('success', 'Connexion réussie');
-        } else {
-            if ($isAjax) {
-                return $this->response
-                    ->setStatusCode(401)
-                    ->setJSON(['success' => false, 'message' => 'Email ou mot de passe incorrect.']);
-            }
-
-            return redirect()->back()->withInput()->with('error', 'Email ou mot de passe incorrect');
+            return redirect()->to('regime')->with('success', 'Connexion réussie.');
         }
+
+        $errorMsg = 'Email ou mot de passe incorrect.';
+        if ($isAjax) {
+            return $this->response
+                ->setStatusCode(401)
+                ->setJSON(['success' => false, 'message' => $errorMsg]);
+        }
+
+        return redirect()->back()->withInput()->with('error', $errorMsg);
     }
 
-    public function inscrire()
-    {
-        $contentType = strtolower($this->request->getHeaderLine('Content-Type'));
-        $payload = str_contains($contentType, 'application/json')
-            ? $this->request->getJSON(true)
-            : null;
+    public function ajouterUser(){
+        $userModel = new UserModel();
         $isAjax = $this->request->isAJAX();
-        $email = is_array($payload) ? (string) ($payload['email'] ?? '') : (string) $this->request->getPost('email');
-        $password = is_array($payload) ? (string) ($payload['password'] ?? '') : (string) $this->request->getPost('password');
-        $genre = is_array($payload) ? (string) ($payload['genre'] ?? '') : (string) $this->request->getPost('genre');
 
-        if ($email === '' || $password === '' || $genre === '') {
+        $data = $this->request->getJSON(true) ?? $this->request->getPost();
+
+        $userData = [
+            'nom'       => $data['name'],
+            'email'     => $data['email'],
+            'password'  => $data['password'],
+            'id_statut' => $data['id_statut'] ?? 1,
+            'porte_monnaie' => $data['porte_monnaie'] ?? 1000.00,
+            'option_gold' => $data['option_gold'] ?? 0.00
+        ];
+
+        if (!$userModel->validate($userData)) {
+            $errors = implode(', ', $userModel->errors());
+            
             if ($isAjax) {
                 return $this->response
                     ->setStatusCode(400)
-                    ->setJSON(['success' => false, 'message' => 'Tous les champs sont obligatoires.']);
+                    ->setJSON(['success' => false, 'message' => $errors]);
             }
-
-            return redirect()->back()->withInput()->with('error', 'Tous les champs sont obligatoires.');
+            return redirect()->back()->withInput()->with('error', $errors);
         }
+
+
+        $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+        
+        $userModel->insert($userData);
+
+        $id=$userModel->getInsertID();
+
+        $user = $userModel->find($id);
+
+        session()->set('user', [
+                'id'        => $user['id_user'],
+                'nom'       => $user['nom'],
+                'email'     => $user['email'],
+                'id_statut' => $user['id_statut'],
+                'porte_monnaie' => $user['porte_monnaie'],
+                'option_gold' => $user['option_gold']
+            ]);
 
         if ($isAjax) {
             return $this->response->setJSON([
                 'success' => true,
-                'message' => 'Inscription enregistree.',
-                'redirect' => '/',
+                'message' => 'Compte créé.',
+                'redirect' => '/inscription/user/info',
             ]);
         }
 
-        return redirect()->to('/')->with('success', 'Inscription enregistree.');
+        return redirect()->to('/inscription/user/info')->with('success', 'Compte créé.');
+    }
+
+    public function information(){
+        $data = [
+            'title' => 'Informations Utilisateur',
+        ];
+
+        return view('information', $data);
+    }
+
+    public function ajouterInformation(){
+        $infoUserModel = new InfoUserModel();
+        $isAjax = $this->request->isAJAX();
+
+        $data = $this->request->getJSON(true) ?? $this->request->getPost();
+        $user = session()->get('user');
+
+        if (!$user || !isset($user['id'])) {
+            $errorMsg = 'Session expirée. Veuillez vous reconnecter.';
+            if ($isAjax) {
+                return $this->response
+                    ->setStatusCode(401)
+                    ->setJSON(['success' => false, 'message' => $errorMsg]);
+            }
+            return redirect()->to('/')->with('error', $errorMsg);
+        }
+
+        $poids = $data['poids'];
+        $taille = $data['taille'];
+        $IMC = $poids/($taille * $taille);
+
+        $infoUserData = [
+            'id_user'   => $user['id'],
+            'genre'     => $data['genre'],
+            'taille'    => $taille,
+            'poids'     => $poids,
+            'IMC'       => $IMC
+        ];
+
+        if (!$infoUserModel->validate($infoUserData)) {
+            $errors = implode(', ', $infoUserModel->errors());
+            
+            if ($isAjax) {
+                return $this->response
+                    ->setStatusCode(400)
+                    ->setJSON(['success' => false, 'message' => $errors]);
+            }
+            return redirect()->back()->withInput()->with('error', $errors);
+        }
+
+        $infoUserModel->insert($infoUserData);
+
+        if ($isAjax) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Informations enregistrées avec succès.',
+                'redirect' => '/regime/objectif',
+            ]);
+        }
+
+        return redirect()->to('/regime/objectif')->with('success', 'Informations enregistrées avec succès.');
+    }
+
+    public function deconnexion(){
+        session()->destroy();
+        return redirect()->to('/')->with('success', 'Déconnexion réussie.');
+    }
+
+
+    public function profil(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $userModel = new UserModel();
+        $userData = $userModel->find($user['id']);
+
+        session()->set('user', array_merge($user, ['porte_monnaie' => $userData['porte_monnaie']]));
+
+        $data = [
+            'title' => 'Mon Profil',
+            'userData' => $userData
+        ];
+
+        return view('profil', $data);
+    }
+
+    public function rechargerPorteMonnaie(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $codeText = $this->request->getPost('code');
+        if (empty($codeText)) {
+            return redirect()->back()->with('error', 'Veuillez entrer un code.');
+        }
+
+        $codeModel = new CodeModel();
+        $code = $codeModel->where('libelle', $codeText)->first();
+
+        if (!$code) {
+            return redirect()->back()->with('error', 'Code invalide.');
+        }
+
+        if (isset($code['date_expiration']) && !empty($code['date_expiration']) && $code['date_expiration'] < date('Y-m-d')) {
+            return redirect()->back()->with('error', 'Ce code est expiré.');
+        }
+
+        $codeUserModel = new CodeUserModel();
+        $dejaUtilise = $codeUserModel->where('id_code', $code['id_code'])
+                                     ->where('id_user', $user['id'])
+                                     ->first();
+
+        if ($dejaUtilise) {
+            return redirect()->back()->with('error', 'Vous avez déjà utilisé ce code.');
+        }
+
+        $userModel = new UserModel();
+        $dbUser = $userModel->find($user['id']);
+        $newSolde = $dbUser['porte_monnaie'] + $code['montant'];
+
+        $userModel->update($user['id'], ['porte_monnaie' => $newSolde]);
+
+        
+        $codeUserModel->insert([
+            'id_code' => $code['id_code'],
+            'id_user' => $user['id'],
+            'date' => date('Y-m-d')
+        ]);
+
+        session()->set('user', array_merge($user, ['porte_monnaie' => $newSolde]));
+
+        return redirect()->back()->with('success', 'Code validé ! ' . $code['montant'] . ' Ar ajoutés à votre porte-monnaie.');
+    }
+
+
+    public function acheterOptionGold(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $userModel = new UserModel();
+        $dbUser = $userModel->find($user['id']);
+
+        if ($dbUser['option_gold'] > 0) {
+            return redirect()->back()->with('error', 'Vous possédez déjà l\'option Gold.');
+        }
+
+        $prixGold = 20000;
+        $pourcentageRemise = 15; 
+
+        if ($dbUser['porte_monnaie'] < $prixGold) {
+            return redirect()->back()->with('error', 'Solde insuffisant pour acheter l\'option Gold (Prix : ' . number_format($prixGold, 2, ',', ' ') . ' Ar). Veuillez recharger votre porte-monnaie.');
+        }
+
+        
+        $nouveauSolde = $dbUser['porte_monnaie'] - $prixGold;
+
+        
+        $userModel->update($user['id'], [
+            'porte_monnaie' => $nouveauSolde,
+            'option_gold' => $pourcentageRemise
+        ]);
+
+        session()->set('user', array_merge($user, [
+            'porte_monnaie' => $nouveauSolde,
+            'option_gold' => $pourcentageRemise
+        ]));
+
+        return redirect()->back()->with('success', 'Félicitations ! Vous avez acquis l\'option Gold et bénéficiez de -' . $pourcentageRemise . '% sur tous vos programmes !');
+    }
+
+    public function dashboard(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $userModel = new UserModel();
+        $regimeModel = new RegimeModel();
+        $selectionModel = new RegimeSelection();
+
+        $totalUsers = (int) $userModel->countAllResults();
+        $totalGoldUsers = (int) $userModel->where('option_gold >', 0)->countAllResults();
+
+        $totalGoldAmountRow = $userModel->selectSum('option_gold', 'total_gold')->first();
+        $totalWalletRow = $userModel->selectSum('porte_monnaie', 'total_wallet')->first();
+
+        $totalGoldAmount = (float) ($totalGoldAmountRow['total_gold'] ?? 0);
+        $totalWalletRecharge = (float) ($totalWalletRow['total_wallet'] ?? 0);
+
+        $objectiveStats = $selectionModel
+            ->select('objectif, COUNT(*) AS total')
+            ->groupBy('objectif')
+            ->findAll();
+
+        $regimeStats = $regimeModel
+            ->select('id_objectif, COUNT(*) AS total_regimes, AVG(prix) AS prix_moyen')
+            ->groupBy('id_objectif')
+            ->findAll();
+
+        $objectifMap = [
+            1 => 'reduire_poids',
+            2 => 'augmenter_poids',
+            3 => 'imc_ideale',
+        ];
+
+        $regimesByObjective = [];
+        foreach ($regimeStats as $row) {
+            $regimesByObjective[] = [
+                'objectif' => $objectifMap[$row['id_objectif']] ?? 'objectif_' . $row['id_objectif'],
+                'total_regimes' => (int) $row['total_regimes'],
+                'prix_moyen' => (float) $row['prix_moyen'],
+            ];
+        }
+
+        $data = [
+            'title' => 'Tableau de bord',
+            'totalUsers' => $totalUsers,
+            'totalGoldUsers' => $totalGoldUsers,
+            'totalGoldAmount' => $totalGoldAmount,
+            'totalWalletRecharge' => $totalWalletRecharge,
+            'objectiveStats' => $objectiveStats,
+            'regimesByObjective' => $regimesByObjective,
+            'userName' => $user['nom'] ?? 'Utilisateur',
+        ];
+
+        return view('dashboard', $data);
     }
 }

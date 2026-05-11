@@ -11,10 +11,10 @@
     <div class="login-shell">
         <section class="login-aside">
             <div>
-                <p class="login-kicker" style="color: rgba(255, 255, 255, 0.74);">HealthyDiet</p>
+                <p class="login-kicker kicker-light">HealthyDiet</p>
                 <h2 class="login-brand">Votre regime commence avec un bon suivi.</h2>
                 <p class="login-copy">
-                    Connectez-vous pour acceder a votre espace personnel, calculer votre IMC et recevoir des suggestions de regimes selon vos objectifs.
+                    Connectez-vous pour acceder a votre espace personnel et recevoir des suggestions de regimes selon vos objectifs.
                 </p>
             </div>
 
@@ -50,14 +50,25 @@
 
                     <div>
                         <label for="password">Mot de passe</label>
-                        <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+                            <button type="button" class="toggle-password" aria-label="Afficher le mot de passe" title="Afficher le mot de passe">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <p class="form-feedback" role="alert" aria-live="polite"></p>
 
-                    <div class="form-actions">
-                        <button type="submit" class="submit-btn">Se connecter</button>
-                        <a class="secondary-btn" href="<?= base_url('inscription') ?>">S'inscrire</a>
+                    <div class="form-actions form-actions-column">
+                        <button type="submit" class="submit-btn btn-full">Se connecter</button>
+                    </div>
+                    
+                    <div class="auth-link">
+                        <p>Vous n'avez pas encore de compte ? <a href="<?= base_url('inscription') ?>">S'inscrire</a></p>
                     </div>
                 </form>
             </div>
