@@ -71,8 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json().catch(() => ({}));
 
             if (!response.ok || !data.success) {
-                const message = data.message || 'Connexion impossible.';
+                const message = data.message || 'Email ou mot de passe incorrect.';
                 setFeedback(message, true);
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalBtnText;
+                }
                 return;
             }
 

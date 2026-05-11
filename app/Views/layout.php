@@ -17,9 +17,8 @@
             <nav class="sidebar-nav">
                 <a class="sidebar-link active" href="<?= base_url('dashboard') ?>">Tableau de bord</a>
                 <a class="sidebar-link" href="#">Mon profil</a>
-                <a class="sidebar-link" href="#">Mes objectifs</a>
+                <a class="sidebar-link" href="<?= base_url('regime/objectif') ?>">Mes objectifs</a>
                 <a class="sidebar-link" href="#">Régimes suggérés</a>
-                <a class="sidebar-link" href="#">Activités sportives</a>
                 <a class="sidebar-link" href="#">Porte-monnaie</a>
             </nav>
 
@@ -34,7 +33,7 @@
 
                 <div class="topbar-actions">
                     <div class="profile-pill">
-                        <?= esc($userName ?? 'Profil utilisateur') ?>
+                        <?= esc('Profil utilisateur') ?>
                     </div>
                     <a class="logout-btn" href="<?= base_url('logout') ?>">Se déconnecter</a>
                 </div>

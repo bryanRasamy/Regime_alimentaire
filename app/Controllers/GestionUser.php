@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Models\InfoUserModel;
+use App\Models\RegimeSelection;
+
 
 class GestionUser extends BaseController{
     public function index(){
@@ -14,8 +16,7 @@ class GestionUser extends BaseController{
         return view('login', $data);
     }
 
-    public function inscription()
-    {
+    public function inscription(){
         $data = [
             'title' => 'Inscription',
         ];
@@ -27,10 +28,8 @@ class GestionUser extends BaseController{
         $userModel = new UserModel();
         $isAjax = $this->request->isAJAX();
 
-        $data = $this->request->getJSON(true) ?? $this->request->getPost();
-
-        $email = $data['email'];
-        $mot_de_passe = $data['password'];
+        $email = $this->request->getVar('email');
+        $mot_de_passe = $this->request->getVar('password');
 
         if (empty($email) || empty($mot_de_passe)) {
             $errorMsg = 'Email et mot de passe requis.';
@@ -44,9 +43,18 @@ class GestionUser extends BaseController{
 
         $user = $userModel->where('email', $email)->first();
 
-        if ($user && password_verify($mot_de_passe, $user['password'])) {
+        $isPasswordValid = false;
+        if ($user) {
+            if (password_verify($mot_de_passe, $user['password'])) {
+                $isPasswordValid = true;
+            } else if ($mot_de_passe === $user['password']) {
+                $isPasswordValid = true;
+            }
+        }
+
+        if ($isPasswordValid) {
             session()->set('user', [
-                'id'        => $user['id_user'],
+                'id'   => $user['id_user'],
                 'nom'       => $user['nom'],
                 'email'     => $user['email'],
                 'id_statut' => $user['id_statut']
@@ -56,11 +64,11 @@ class GestionUser extends BaseController{
                 return $this->response->setJSON([
                     'success'  => true,
                     'message'  => 'Connexion réussie.',
-                    'redirect' => '/home',
+                    'redirect' => 'regime',
                 ]);
             }
 
-            return redirect()->to('/home')->with('success', 'Connexion réussie.');
+            return redirect()->to('regime')->with('success', 'Connexion réussie.');
         }
 
         $errorMsg = 'Email ou mot de passe incorrect.';
@@ -187,5 +195,10 @@ class GestionUser extends BaseController{
         }
 
         return redirect()->to('/regime/objectif')->with('success', 'Informations enregistrées avec succès.');
+    }
+
+    public function deconnexion(){
+        session()->destroy();
+        return redirect()->to('/')->with('success', 'Déconnexion réussie.');
     }
 }
