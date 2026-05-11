@@ -11,7 +11,7 @@
     <div class="login-shell">
         <section class="login-aside">
             <div>
-                <p class="login-kicker" style="color: rgba(255, 255, 255, 0.74);">HealthyDiet</p>
+                <p class="login-kicker kicker-light">HealthyDiet</p>
                 <h2 class="login-brand">Créer votre compte</h2>
                 <p class="login-copy">
                     Renseignez vos informations pour commencer.

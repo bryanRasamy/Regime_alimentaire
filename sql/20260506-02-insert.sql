@@ -62,7 +62,7 @@ INSERT INTO niveau_intensite (libelle) VALUES
     ('Faible'),
     ('Élevée');
 
--- DONNEE POUR ACTIVITE_SPORTIVE
+-- donnee pour activite sportive
 INSERT INTO activite_sportive (id_activite, id_sport, id_objectif, description, variation_poids, duree_jours, id_niveau) VALUES
     (1, 1, 1, 'Course à pied de 30 minutes à une intensité modérée pour favoriser la perte de poids.', -0.5, 30, 1),
     (2, 2, 2, 'Séance de musculation de 45 minutes axée sur les exercices de force pour favoriser la prise de masse musculaire.', +0.3, 45, 2),

@@ -20,4 +20,5 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->post('regime/objectif/add', 'GestionRegime::sauvegarderObjectif');
     $routes->get('regime/calculer', 'GestionRegime::calculerRegime');
     $routes->get('regime', 'GestionRegime::afficherRegime');
+    $routes->get('regime/export/pdf', 'GestionRegime::exporterPdf');
 });

@@ -11,7 +11,7 @@
     <div class="login-shell">
         <section class="login-aside">
             <div>
-                <p class="login-kicker" style="color: rgba(255, 255, 255, 0.74);">HealthyDiet</p>
+                <p class="login-kicker kicker-light">HealthyDiet</p>
                 <h2 class="login-brand">Derniere etape.</h2>
                 <p class="login-copy">
                     Ces informations nous sont necessaires pour calculer votre IMC avec precision et vous proposer le programme le plus adapte.
@@ -69,8 +69,8 @@
 
                     <p class="form-feedback" role="alert" aria-live="polite"></p>
 
-                    <div class="form-actions" style="flex-direction: column;">
-                        <button type="submit" class="submit-btn" style="width: 100%;">Terminer l'inscription</button>
+                    <div class="form-actions form-actions-column">
+                        <button type="submit" class="submit-btn btn-full">Terminer l'inscription</button>
                     </div>
                 </form>
             </div>

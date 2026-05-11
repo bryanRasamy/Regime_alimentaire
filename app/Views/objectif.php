@@ -11,7 +11,7 @@
     <div class="login-shell">
         <section class="login-aside">
             <div>
-                <p class="login-kicker" style="color: rgba(255, 255, 255, 0.74);">HealthyDiet</p>
+                <p class="login-kicker kicker-light">HealthyDiet</p>
                 <h2 class="login-brand">Definissez votre objectif.</h2>
                 <p class="login-copy">
                     Choisissez ce que vous voulez atteindre pour que nous puissions adapter votre programme.
@@ -67,8 +67,8 @@
 
                     <p class="form-feedback" role="alert" aria-live="polite"></p>
 
-                    <div class="form-actions" style="flex-direction: column;">
-                        <button type="submit" class="submit-btn" style="width: 100%;">Continuer</button>
+                    <div class="form-actions form-actions-column">
+                        <button type="submit" class="submit-btn btn-full">Continuer</button>
                     </div>
                 </form>
             </div>

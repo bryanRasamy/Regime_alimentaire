@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'HealthyDiet') ?></title>
     <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/style.css') ?>">
 </head>
 <body>
     <div class="app-shell">
@@ -16,9 +17,7 @@
 
             <nav class="sidebar-nav">
                 <a class="sidebar-link active" href="<?= base_url('dashboard') ?>">Tableau de bord</a>
-                <a class="sidebar-link" href="#">Mon profil</a>
                 <a class="sidebar-link" href="<?= base_url('regime/objectif') ?>">Mes objectifs</a>
-                <a class="sidebar-link" href="#">Régimes suggérés</a>
                 <a class="sidebar-link" href="#">Porte-monnaie</a>
             </nav>
 

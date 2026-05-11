@@ -49,13 +49,6 @@ CREATE TABLE objectif(
     libelle VARCHAR(50)
 );
 
-CREATE TABLE norme_imc(
-    id_norme INT PRIMARY KEY AUTO_INCREMENT,
-    libelle VARCHAR(50),
-    v_min NUMERIC(5,2),
-    v_max NUMERIC(5,2)
-);
-
 CREATE TABLE regime(
     id_regime INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(50),

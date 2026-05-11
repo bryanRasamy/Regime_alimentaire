@@ -11,7 +11,7 @@
     <div class="login-shell">
         <section class="login-aside">
             <div>
-                <p class="login-kicker" style="color: rgba(255, 255, 255, 0.74);">HealthyDiet</p>
+                <p class="login-kicker kicker-light">HealthyDiet</p>
                 <h2 class="login-brand">Votre regime commence avec un bon suivi.</h2>
                 <p class="login-copy">
                     Connectez-vous pour acceder a votre espace personnel et recevoir des suggestions de regimes selon vos objectifs.
@@ -63,8 +63,8 @@
 
                     <p class="form-feedback" role="alert" aria-live="polite"></p>
 
-                    <div class="form-actions" style="flex-direction: column;">
-                        <button type="submit" class="submit-btn" style="width: 100%;">Se connecter</button>
+                    <div class="form-actions form-actions-column">
+                        <button type="submit" class="submit-btn btn-full">Se connecter</button>
                     </div>
                     
                     <div class="auth-link">
