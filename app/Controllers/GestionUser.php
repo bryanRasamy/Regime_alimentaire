@@ -4,7 +4,8 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Models\InfoUserModel;
-use App\Models\RegimeSelection;
+use App\Models\CodeModel;
+use App\Models\CodeUserModel;
 
 
 class GestionUser extends BaseController{
@@ -200,5 +201,112 @@ class GestionUser extends BaseController{
     public function deconnexion(){
         session()->destroy();
         return redirect()->to('/')->with('success', 'Déconnexion réussie.');
+    }
+
+
+    public function profil(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $userModel = new UserModel();
+        $userData = $userModel->find($user['id']);
+
+        session()->set('user', array_merge($user, ['porte_monnaie' => $userData['porte_monnaie']]));
+
+        $data = [
+            'title' => 'Mon Profil',
+            'userData' => $userData
+        ];
+
+        return view('profil', $data);
+    }
+
+    public function rechargerPorteMonnaie(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $codeText = $this->request->getPost('code');
+        if (empty($codeText)) {
+            return redirect()->back()->with('error', 'Veuillez entrer un code.');
+        }
+
+        $codeModel = new CodeModel();
+        $code = $codeModel->where('libelle', $codeText)->first();
+
+        if (!$code) {
+            return redirect()->back()->with('error', 'Code invalide.');
+        }
+
+        if (isset($code['date_expiration']) && !empty($code['date_expiration']) && $code['date_expiration'] < date('Y-m-d')) {
+            return redirect()->back()->with('error', 'Ce code est expiré.');
+        }
+
+        $codeUserModel = new CodeUserModel();
+        $dejaUtilise = $codeUserModel->where('id_code', $code['id_code'])
+                                     ->where('id_user', $user['id'])
+                                     ->first();
+
+        if ($dejaUtilise) {
+            return redirect()->back()->with('error', 'Vous avez déjà utilisé ce code.');
+        }
+
+        $userModel = new UserModel();
+        $dbUser = $userModel->find($user['id']);
+        $newSolde = $dbUser['porte_monnaie'] + $code['montant'];
+
+        $userModel->update($user['id'], ['porte_monnaie' => $newSolde]);
+
+        
+        $codeUserModel->insert([
+            'id_code' => $code['id_code'],
+            'id_user' => $user['id'],
+            'date' => date('Y-m-d')
+        ]);
+
+        session()->set('user', array_merge($user, ['porte_monnaie' => $newSolde]));
+
+        return redirect()->back()->with('success', 'Code validé ! ' . $code['montant'] . ' Ar ajoutés à votre porte-monnaie.');
+    }
+
+
+    public function acheterOptionGold(){
+        $user = session()->get('user');
+        if (!$user || !isset($user['id'])) {
+            return redirect()->to('/')->with('error', 'Session expirée.');
+        }
+
+        $userModel = new UserModel();
+        $dbUser = $userModel->find($user['id']);
+
+        if ($dbUser['option_gold'] > 0) {
+            return redirect()->back()->with('error', 'Vous possédez déjà l\'option Gold.');
+        }
+
+        $prixGold = 20000;
+        $pourcentageRemise = 15; 
+
+        if ($dbUser['porte_monnaie'] < $prixGold) {
+            return redirect()->back()->with('error', 'Solde insuffisant pour acheter l\'option Gold (Prix : ' . number_format($prixGold, 2, ',', ' ') . ' Ar). Veuillez recharger votre porte-monnaie.');
+        }
+
+        
+        $nouveauSolde = $dbUser['porte_monnaie'] - $prixGold;
+
+        
+        $userModel->update($user['id'], [
+            'porte_monnaie' => $nouveauSolde,
+            'option_gold' => $pourcentageRemise
+        ]);
+
+        session()->set('user', array_merge($user, [
+            'porte_monnaie' => $nouveauSolde,
+            'option_gold' => $pourcentageRemise
+        ]));
+
+        return redirect()->back()->with('success', 'Félicitations ! Vous avez acquis l\'option Gold et bénéficiez de -' . $pourcentageRemise . '% sur tous vos programmes !');
     }
 }

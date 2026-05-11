@@ -20,5 +20,8 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->post('regime/objectif/add', 'GestionRegime::sauvegarderObjectif');
     $routes->get('regime/calculer', 'GestionRegime::calculerRegime');
     $routes->get('regime', 'GestionRegime::afficherRegime');
+    $routes->get('profil', 'GestionUser::profil');
+    $routes->post('profil/recharger', 'GestionUser::rechargerPorteMonnaie');
+    $routes->post('profil/acheter-gold', 'GestionUser::acheterOptionGold');
     $routes->get('regime/export/pdf', 'GestionRegime::exporterPdf');
 });

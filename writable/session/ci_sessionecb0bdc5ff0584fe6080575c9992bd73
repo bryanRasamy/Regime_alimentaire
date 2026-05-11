@@ -1,0 +1,1 @@
+__ci_last_regenerate|i:1778489898;user|a:5:{s:2:"id";s:1:"6";s:3:"nom";s:4:"test";s:5:"email";s:11:"a@gmail.com";s:9:"id_statut";s:1:"1";s:13:"porte_monnaie";s:8:"11000.00";}_ci_previous_url|s:28:"http://localhost:8080/profil";success|s:59:"Code validé ! 10000.00 Ar ajoutés à votre porte-monnaie.";__ci_vars|a:1:{s:7:"success";s:3:"old";}

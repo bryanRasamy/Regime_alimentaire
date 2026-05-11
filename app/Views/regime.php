@@ -5,19 +5,18 @@
     <div class="program-header">
         <h1 class="program-title">Votre Programme Personnalisé</h1>
         
-        <?php if (!empty($infoUser)): ?>
+        <?php if (!empty($infoUser)) { ?>
         <div class="imc-box">
             <p class="imc-text">
                 <strong>Votre IMC actuel :</strong> <?= esc($infoUser['IMC']) ?> 
                 <span class="imc-details">(Poids: <?= esc($infoUser['poids']) ?> kg | Taille: <?= esc($infoUser['taille']) ?> m)</span>
             </p>
         </div>
-        <?php endif; ?>
+        <?php } ?>
 
         <p class="objective-text">
             Objectif : <strong>
-                <?php 
-                if ($selection['objectif'] === 'augmenter_poids') echo 'Prendre du poids';
+                <?php if ($selection['objectif'] === 'augmenter_poids') echo 'Prendre du poids';
                 elseif ($selection['objectif'] === 'reduire_poids') echo 'Perdre du poids';
                 else echo 'Atteindre un IMC idéal';
                 ?>
@@ -35,9 +34,9 @@
         <section class="diet-section">
             <h2 class="section-title">Vos Régimes Alimentaires</h2>
             
-            <?php if (!empty($regimes)): ?>
+            <?php if (!empty($regimes)) { ?>
                 <div class="card-grid">
-                    <?php foreach ($regimes as $regime): ?>
+                    <?php foreach ($regimes as $regime) { ?>
                         <div class="regime-card">
                             <h3 class="card-title"><?= esc($regime['nom']) ?></h3>
                             <p class="card-desc"><?= esc($regime['description']) ?></p>
@@ -50,9 +49,9 @@
                             <div class="composition-box">
                                 <strong>Composition :</strong>
                                 <div class="composition-details">
-                                    <span>Viande: <?= esc((float)$regime['viande'] * 100) ?>%</span>
-                                    <span>Poisson: <?= esc((float)$regime['poisson'] * 100) ?>%</span>
-                                    <span>Volaille: <?= esc((float)$regime['volaille'] * 100) ?>%</span>
+                                    <span>Viande: <?= esc((float)$regime['viande']) ?>%</span>
+                                    <span>Poisson: <?= esc((float)$regime['poisson']) ?>%</span>
+                                    <span>Volaille: <?= esc((float)$regime['volaille']) ?>%</span>
                                 </div>
                             </div>
                             
@@ -60,7 +59,7 @@
                                 <?= esc($regime['prix']) ?> Ar
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php } ?>
                 </div>
                 
                 <?php 
@@ -69,20 +68,20 @@
                 <div class="total-cost-box">
                     <span class="total-cost-text">Coût total du programme alimentaire : <strong><?= number_format($prixTotal, 2, ',', ' ') ?> Ar</strong></span>
                 </div>
-            <?php else: ?>
+            <?php } else { ?>
                 <p class="empty-state-text">Aucun régime alimentaire spécifique n'a été assigné pour le moment.</p>
-            <?php endif; ?>
+            <?php } ?>
         </section>
 
         <!-- Section Activités Sportives -->
         <section class="activity-section">
             <h2 class="section-title">Vos Activités Sportives</h2>
             
-            <?php if (!empty($activites)): ?>
+            <?php if (!empty($activites)) { ?>
                 <div class="card-grid">
                     <?php 
                     $totalJoursSport = 0;
-                    foreach ($activites as $activite): 
+                    foreach ($activites as $activite) {
                         $totalJoursSport += (int)($activite['duree_jours'] ?? 0);
                     ?>
                         <div class="activity-card">
@@ -93,11 +92,11 @@
                                 <li><strong>Variation de poids prévue :</strong> <?= esc($activite['variation_poids'] ?? 0) ?> kg</li>
                             </ul>
                         </div>
-                    <?php endforeach; ?>
+                    <?php } ?>
                 </div>
-            <?php else: ?>
+            <?php } else { ?>
                 <p class="empty-state-italic">Aucune activité sportive spécifique associée à ce programme pour l'instant.</p>
-            <?php endif; ?>
+            <?php } ?>
         </section>
 
         <?php
@@ -111,14 +110,14 @@
             <p class="total-duration-text">
                 <strong>Durée totale du programme :</strong> <br><br>
                 <?= $totalJoursRegime ?> jours de régimes alimentaires
-                <?php if ($totalJoursSport > 0): ?>
+                <?php if ($totalJoursSport > 0) { ?>
                     <br>et <?= $totalJoursSport ?> jours d'activités sportives
-                <?php endif; ?>
+                <?php } ?>
             </p>
         </div>
 
         <div class="dashboard-link-container">
-            <a href="<?= base_url('regime/export/pdf') ?>" class="btn dashboard-btn" style="background: #10b981; margin-right: 15px;" target="_blank">Exporter en PDF</a>
+            <a href="<?= base_url('regime/export/pdf') ?>" class="btn dashboard-btn btn-export" target="_blank">Exporter en PDF</a>
             <a href="<?= base_url('dashboard') ?>" class="btn dashboard-btn">Allez au Tableau de Bord</a>
         </div>
 

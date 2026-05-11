@@ -5,8 +5,6 @@ namespace App\Controllers;
 use App\Models\RegimeModel;
 use App\Models\RegimeSelection;
 use App\Models\RegimeUserModel;
-use App\Models\ActiviteModel;
-use App\Models\ActiviteUserModel;
 
 class GestionRegime extends BaseController{
     public function objectif(){
@@ -145,6 +143,16 @@ class GestionRegime extends BaseController{
                                    ->where('regime_user.id_selection', $selection['id_selection'])
                                    ->findAll();
 
+        $userModel = new \App\Models\UserModel();
+        $dbUser = $userModel->find($user['id']);
+        $remise = (float)($dbUser['option_gold'] ?? 0);
+        
+        if ($remise > 0) {
+            foreach ($regimes as &$r) {
+                $r['prix'] = $r['prix'] - (($r['prix'] * $remise) / 100);
+            }
+        }
+
         $activiteUserModel = new \App\Models\ActiviteUserModel();
         $activites = $activiteUserModel->select('activite_sportive.*')
                                        ->join('activite_sportive', 'activite_sportive.id_activite = activite_user.id_activite')
@@ -190,6 +198,16 @@ class GestionRegime extends BaseController{
                                    ->join('regime', 'regime.id_regime = regime_user.id_regime')
                                    ->where('regime_user.id_selection', $selection['id_selection'])
                                    ->findAll();
+
+        $userModel = new \App\Models\UserModel();
+        $dbUser = $userModel->find($user['id']);
+        $remise = (float)($dbUser['option_gold'] ?? 0);
+        
+        if ($remise > 0) {
+            foreach ($regimes as &$r) {
+                $r['prix'] = $r['prix'] - (($r['prix'] * $remise) / 100);
+            }
+        }
 
         $activiteUserModel = new \App\Models\ActiviteUserModel();
         $activites = $activiteUserModel->select('activite_sportive.*')

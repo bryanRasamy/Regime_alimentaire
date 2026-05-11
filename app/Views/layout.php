@@ -17,8 +17,9 @@
 
             <nav class="sidebar-nav">
                 <a class="sidebar-link active" href="<?= base_url('dashboard') ?>">Tableau de bord</a>
+                <a class="sidebar-link" href="<?= base_url('regime') ?>">Mon regime</a>
+                <a class="sidebar-link" href="<?= base_url('profil') ?>">Mon profil</a>
                 <a class="sidebar-link" href="<?= base_url('regime/objectif') ?>">Mes objectifs</a>
-                <a class="sidebar-link" href="#">Porte-monnaie</a>
             </nav>
 
             <div class="sidebar-note">
@@ -31,6 +32,18 @@
                 <div class="topbar-brand">HealthyDiet</div>
 
                 <div class="topbar-actions">
+                    <?php 
+                    $userSession = session()->get('user'); 
+                    $isGold = isset($userSession['option_gold']) && $userSession['option_gold'] > 0;
+                    if (!$isGold && $userSession) {
+                    ?>
+                    <form action="<?= base_url('profil/acheter-gold') ?>" method="post" class="form-gold">
+                        <?= csrf_field() ?>
+                        <button type="submit" class="btn-gold">🌟 Acheter Option Gold (20 000 Ar)</button>
+                    </form>
+                    <?php } elseif ($isGold && $userSession) { ?>
+                        <div class="badge-gold">🌟 Membre Gold</div>
+                    <?php } ?>
                     <div class="profile-pill">
                         <?= esc('Profil utilisateur') ?>
                     </div>
@@ -40,6 +53,18 @@
 
             <main class="page-content">
                 <div class="content-card">
+                    <?php if (session()->getFlashdata('success')) { ?>
+                        <div class="alert-success">
+                            <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php } ?>
+
+                    <?php if (session()->getFlashdata('error')) { ?>
+                        <div class="alert-error">
+                            <?= session()->getFlashdata('error') ?>
+                        </div>
+                    <?php } ?>
+                    
                     <?= $this->renderSection('content') ?>
                 </div>
             </main>
